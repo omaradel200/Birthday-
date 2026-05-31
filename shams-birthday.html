@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عيد ميلاد شمس 🌹</title>
+<link href="https://fonts.googleapis.com/css2?family=Lateef:wght@300;400;500;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --rose:   #e8325a;
+  --gold:   #f0c040;
+  --cream:  #fff8f0;
+  --deep:   #120008;
+  --wine:   #6b0028;
+  --blush:  #ffd6e4;
+  --text:   #2a000f;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--deep);
+  font-family: 'Amiri', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── CANVAS PARTICLES ── */
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── CELEBRATION SCREEN ── */
+#celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 50%, #3d0020 0%, #120008 70%);
+  overflow: hidden;
+}
+
+.fireworks-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cel-inner {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 20px;
+}
+
+.cel-shams {
+  font-family: 'Lateef', serif;
+  font-size: clamp(52px, 14vw, 110px);
+  font-weight: 800;
+  background: linear-gradient(135deg, #f0c040 0%, #ff6b95 40%, #f0c040 70%, #fff 100%);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 3s linear infinite, popIn 0.8s cubic-bezier(0.34,1.56,0.64,1) both;
+  line-height: 1;
+  filter: drop-shadow(0 0 40px #f0c04066);
+}
+
+@keyframes goldShimmer {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+@keyframes popIn {
+  from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.cel-sub {
+  font-size: clamp(18px, 5vw, 30px);
+  color: #ffd6e4;
+  margin-top: 8px;
+  letter-spacing: 4px;
+  animation: fadeUp 1s 0.4s ease both;
+}
+
+.cel-emoji-row {
+  font-size: clamp(28px, 7vw, 48px);
+  margin-top: 18px;
+  animation: fadeUp 1s 0.7s ease both;
+  letter-spacing: 6px;
+}
+
+.cel-btn {
+  margin-top: 40px;
+  padding: 14px 48px;
+  background: linear-gradient(135deg, var(--rose), var(--wine));
+  border: 2px solid #f0c04066;
+  border-radius: 50px;
+  color: #fff;
+  font-family: 'Lateef', serif;
+  font-size: 22px;
+  cursor: pointer;
+  letter-spacing: 2px;
+  animation: fadeUp 1s 1s ease both, pulseGlow 2s 2s ease-in-out infinite;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.cel-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, #fff3, transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.cel-btn:hover::before { transform: translateX(100%); }
+.cel-btn:hover { transform: scale(1.06); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 20px #e8325a55, 0 8px 30px #00000055; }
+  50%      { box-shadow: 0 0 40px #e8325aaa, 0 8px 40px #00000066; }
+}
+
+/* Floating celebration items */
+.float-item {
+  position: absolute;
+  font-size: var(--s);
+  animation: floatRand var(--d) ease-in-out infinite;
+  animation-delay: var(--dl);
+  opacity: 0.7;
+  pointer-events: none;
+}
+@keyframes floatRand {
+  0%   { transform: translateY(0) rotate(0deg) scale(1); }
+  33%  { transform: translateY(-25px) rotate(10deg) scale(1.1); }
+  66%  { transform: translateY(10px) rotate(-8deg) scale(0.95); }
+  100% { transform: translateY(0) rotate(0deg) scale(1); }
+}
+
+/* ── LETTER PAGE ── */
+#letter-page {
+  display: none;
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+  padding: 0 0 80px;
+}
+
+/* Hero banner */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  position: relative;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, #4d0025aa 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 50% 100%, #1a000d 0%, transparent 60%);
+}
+
+.hero-date {
+  font-size: 13px;
+  letter-spacing: 5px;
+  color: #f0c04099;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  animation: fadeUp 1s ease both;
+}
+
+.hero-name {
+  font-family: 'Lateef', serif;
+  font-size: clamp(70px, 20vw, 150px);
+  font-weight: 800;
+  line-height: 0.9;
+  background: linear-gradient(160deg, #fff 0%, #f0c040 35%, #e8325a 65%, #f0c040 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeUp 1s 0.2s ease both;
+  filter: drop-shadow(0 4px 40px #e8325a44);
+}
+
+.hero-tagline {
+  font-size: clamp(16px, 4vw, 24px);
+  color: #ffd6e4cc;
+  margin-top: 16px;
+  font-style: italic;
+  letter-spacing: 2px;
+  animation: fadeUp 1s 0.4s ease both;
+}
+
+.scroll-hint {
+  margin-top: 50px;
+  color: #e8325a88;
+  font-size: 14px;
+  letter-spacing: 3px;
+  animation: fadeUp 1s 0.8s ease both, bob 2s 2s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(8px); }
+}
+
+/* Divider */
+.ornament {
+  text-align: center;
+  color: #f0c04066;
+  font-size: 20px;
+  letter-spacing: 10px;
+  margin: 10px 0;
+}
+
+/* ── LETTER CONTENT ── */
+.letter-wrapper {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.letter-section {
+  background: linear-gradient(160deg, #2a0015ee, #1a000dee);
+  border: 1px solid #e8325a22;
+  border-radius: 24px;
+  padding: clamp(28px, 6vw, 56px);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.letter-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.letter-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--rose), var(--gold), var(--rose), transparent);
+  background-size: 200% 100%;
+  animation: shimmerLine 4s linear infinite;
+}
+@keyframes shimmerLine {
+  0%   { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+.section-icon {
+  font-size: 36px;
+  text-align: center;
+  display: block;
+  margin-bottom: 18px;
+  filter: drop-shadow(0 0 12px #e8325a88);
+}
+
+.section-title {
+  font-family: 'Lateef', serif;
+  font-size: clamp(26px, 6vw, 38px);
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 22px;
+  font-weight: 700;
+  text-shadow: 0 0 30px #f0c04044;
+}
+
+.letter-text {
+  color: #ffe8f0;
+  font-size: clamp(17px, 3.5vw, 21px);
+  line-height: 2.2;
+  text-align: right;
+}
+
+.letter-text p {
+  margin-bottom: 22px;
+}
+
+.letter-text p:last-child { margin-bottom: 0; }
+
+.hl-rose { color: #ff7fa0; font-weight: 700; }
+.hl-gold { color: var(--gold); font-weight: 700; }
+.hl-name {
+  color: var(--gold);
+  font-family: 'Lateef', serif;
+  font-size: 1.15em;
+  font-weight: 800;
+  text-shadow: 0 0 20px #f0c04066;
+}
+
+/* ── FINAL SIGNATURE ── */
+.signature-card {
+  background: linear-gradient(160deg, #3d0020, #1a000d);
+  border: 1px solid #f0c04033;
+  border-radius: 24px;
+  padding: clamp(36px, 7vw, 64px) clamp(28px, 6vw, 56px);
+  text-align: center;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.signature-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.signature-card::after {
+  content: '🌹';
+  position: absolute;
+  font-size: 200px;
+  bottom: -50px;
+  left: -50px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.sig-big {
+  font-family: 'Lateef', serif;
+  font-size: clamp(40px, 10vw, 70px);
+  font-weight: 800;
+  background: linear-gradient(135deg, #f0c040, #ff7fa0, #f0c040);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s linear infinite;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.sig-poem {
+  color: #ffd6e4bb;
+  font-size: clamp(16px, 3.5vw, 20px);
+  line-height: 2.2;
+  font-style: italic;
+  margin-bottom: 28px;
+}
+
+.sig-hearts {
+  font-size: clamp(24px, 6vw, 40px);
+  letter-spacing: 8px;
+  animation: heartPulse 1.5s ease-in-out infinite;
+}
+@keyframes heartPulse {
+  0%,100% { transform: scale(1); }
+  50%      { transform: scale(1.12); }
+}
+
+/* ── FLOATING HEARTS BG ── */
+.bg-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1;
+  animation: floatHeart var(--d) ease-in infinite;
+  animation-delay: var(--dl);
+  opacity: 0;
+  font-size: var(--s);
+  bottom: -60px;
+  left: var(--l);
+}
+@keyframes floatHeart {
+  0%   { transform: translateY(0) rotate(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--wine); border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- ══════════════ CELEBRATION SCREEN ══════════════ -->
+<div id="celebration">
+  <div class="fireworks-layer" id="fw-layer"></div>
+
+  <div class="cel-inner">
+    <div class="cel-shams">شمس 🌟</div>
+    <div class="cel-sub">كل سنة وأنتِ نور حياتي</div>
+    <div class="cel-emoji-row">🌹 🎂 🌹</div>
+    <button class="cel-btn" onclick="openLetter()">✉️ افتحي رسالتك</button>
+  </div>
+</div>
+
+<!-- ══════════════ LETTER PAGE ══════════════ -->
+<div id="letter-page">
+
+  <!-- Floating hearts -->
+  <div id="hearts-bg"></div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-date">✦ عيد ميلادك ✦</div>
+    <div class="hero-name">شمس</div>
+    <div class="hero-tagline">أنتِ الشمس اللي بتشرق في حياتي كل يوم</div>
+    <div class="scroll-hint">↓ اتفضلي ↓</div>
+  </div>
+
+  <div class="letter-wrapper">
+
+    <!-- Section 1 -->
+    <div class="letter-section" data-reveal>
+      <span class="section-icon">🌙</span>
+      <div class="section-title">قبل ما تيجي</div>
+      <div class="letter-text">
+        <p>
+          <span class="hl-name">يا شمس</span>..
+          قبل ما أعرفك، كنت عايش في حياة عادية، أيامها متشابهة وأوقاتها بتعدي من غير ما تسيب أثر.
+          كنت بصحى الصبح وأنا مش حاسس إن في حاجة بتستنّاني تخليني أبتسم من غير سبب.
+        </p>
+        <p>
+          الدنيا كانت شغّالة.. بس ناقصة حاجة مش عارف أسميها.
+          ناقصة صوت يدفّيك، وعيون تحسسك إنك موجود ومهم.
+          ناقصة <span class="hl-rose">إنتِ</span>.
+        </p>
+        <p>
+          ومعرفتش وقتها إن في واحدة اسمها <span class="hl-name">شمس</span> هتيجي وتملي الفراغ ده كله،
+          وهتبقى هي الحاجة اللي كنت بدور عليها من غير ما أعرف.
+        </p>
+      </div>
+    </div>
+
+    <div class="ornament">✦ ✦ ✦</div>
+
+    <!-- Section 2 -->
+    <div class="letter-section" data-reveal>
+      <span class="section-icon">💫</span>
+      <div class="section-title">لما جيتِ</div>
+      <div class="letter-text">
+        <p>
+          لما جيتِ في حياتي، حسيت إن حاجة اتغيرت جوايا.
+          مش بس إني <span class="hl-rose">بحبك</span>..
+          لأ، الموضوع أكبر من كده.
+          حسيت إن الدنيا بدأت تبان بألوان تانية، وإن الأيام بقت عندها معنى.
+        </p>
+        <p>
+          صحيت يوم وألاقيكِ موجودة في حياتي وقلتلنفسي:
+          "<span class="hl-gold">ده مش حظ، ده نعمة.</span>"
+          إنتِ مش بس حبيبة.. إنتِ الحاجة اللي بتخليني أحب كل حاجة تانية أكتر.
+        </p>
+        <p>
+          بقيتِ الصوت اللي بدور عليه في دماغي،
+          والابتسامة اللي بتيجي على وشّي من غير ما أحد يعمل حاجة،
+          والحاجة اللي بقى يومي ناقص من غيرها.
+        </p>
+      </div>
+    </div>
+
+    <div class="ornament">✦ ✦ ✦</div>
+
+    <!-- Section 3 -->
+    <div class="letter-section" data-reveal>
+      <span class="section-icon">🌹</span>
+      <div class="section-title">إيه اللي بتمثليه بالنسباليّ</div>
+      <div class="letter-text">
+        <p>
+          <span class="hl-name">يا شمس</span>..
+          إنتِ بالنسبالي مش بس بنت بحبها.
+          إنتِ الأمان اللي بلاقيه لما يبقى الجو تقيل.
+          إنتِ الضحكة اللي بتطلع مني حتى لو أنا تعبان.
+        </p>
+        <p>
+          لما بكون بعيد وبفتكرك، حاسس إن في دفا بييجي من جوايا.
+          ولما بسمع صوتك، حاسس إن الدنيا بتهدى وكل حاجة بتبقى تمام.
+        </p>
+        <p>
+          إنتِ فعلاً <span class="hl-gold">شمس</span>..
+          مش بس في الاسم.
+          إنتِ شمس بمعنى الكلمة الحقيقي:
+          بتديني دفا، وبتنوّري طريقي، وبتخليني أشوف الدنيا بشكل أجمل.
+        </p>
+        <p>
+          ومش كل الشموس بتكون <span class="hl-rose">حلوة زيّك.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="ornament">✦ ✦ ✦</div>
+
+    <!-- Section 4 -->
+    <div class="letter-section" data-reveal>
+      <span class="section-icon">⏳</span>
+      <div class="section-title">السنة اللي فاتت</div>
+      <div class="letter-text">
+        <p>
+          سنة كاملة..
+          وأنا لسه مستغرب إزاي الوقت مشي بالسرعة دي.
+          بس لما بفكر فيها، بالقيها كانت <span class="hl-gold">أجمل سنة في حياتي.</span>
+        </p>
+        <p>
+          فيها لحظات ضحكنا فيها لحد ما دموعنا نزلت.
+          وفيها لحظات وقفنا جنب بعض من غير ما نقول حاجة، وكان كل حاجة واضحة من غير كلام.
+          وفيها لحظات شيلنا فيها بعض وفضلنا.
+        </p>
+        <p>
+          السنة دي علّمتني إن الحب الحقيقي مش بس في الأوقات الجميلة..
+          الحب الحقيقي هو إنك تلاقي حد يفضل معاك حتى لو الجو صعب،
+          وإنتِ <span class="hl-rose">كنتِ دايماً هي الحد ده.</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="ornament">✦ ✦ ✦</div>
+
+    <!-- Section 5 -->
+    <div class="letter-section" data-reveal>
+      <span class="section-icon">🌅</span>
+      <div class="section-title">وعودي ليكِ</div>
+      <div class="letter-text">
+        <p>
+          <span class="hl-name">يا شمس</span>..
+          أنا مش هوعدك بالدنيا، لأن الدنيا دي مش كلها في إيدايا.
+          بس هوعدك بحاجات أقدر أوعد بيها فعلاً.
+        </p>
+        <p>
+          هوعدك إني <span class="hl-gold">هكون دايماً جنبك</span>،
+          في الأوقات الحلوة اللي نضحك فيها،
+          وفي الأوقات الصعبة اللي محتاجة فيها حد يشيلك.
+        </p>
+        <p>
+          هوعدك إني هفضل أشوفك بنفس النظرة اللي شفتك بيها أول ما قابلتك.
+          هوعدك إن إحساسك إنك مهمة ومحبوبة مش هيتغير.
+          هوعدك إني كل سنة هخليكِ تحسي إن الحياة <span class="hl-rose">أجمل معايا.</span>
+        </p>
+        <p>
+          وهوعدك إن ده مش أول عيد ميلاد ونحنا سوا.. ده بس الأول من كتير.
+        </p>
+      </div>
+    </div>
+
+    <div class="ornament">✦ ✦ ✦</div>
+
+    <!-- Signature -->
+    <div class="signature-card" data-reveal>
+      <div class="sig-big">كل سنة وأنتِ حياتي 🌹</div>
+      <div class="sig-poem">
+        يا <span style="color:#f0c040;font-family:'Lateef',serif;font-size:1.1em;">شمس</span>..
+        زيّ ما شمس الصبح بتشرق كل يوم وبتفرق،<br>
+        إنتِ بتشرقي في حياتي كل يوم وبتفرقي.<br><br>
+        ربنا يديكِ الصحة والسعادة والفرحة،<br>
+        ويكمّل عليكِ نعمته في كل خطوة بتخطيها.<br><br>
+        <span style="color:#ff7fa0;">بحبك يا شمسي.. من أعمق قلبي.</span>
+      </div>
+      <div class="sig-hearts">🌹 ❤️ 🌹</div>
+    </div>
+
+  </div><!-- /letter-wrapper -->
+</div><!-- /letter-page -->
+
+<script>
+/* ══ CANVAS PARTICLES ══ */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resizeCanvas() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function Particle(x, y, isFirework) {
+  this.x = x || Math.random() * W;
+  this.y = y || Math.random() * H;
+  this.r = Math.random() * (isFirework ? 4 : 2) + 1;
+  this.color = isFirework
+    ? ['#e8325a','#f0c040','#ff7fa0','#ffffff','#ffd6e4'][Math.floor(Math.random()*5)]
+    : `hsla(${320+Math.random()*60},80%,${60+Math.random()*30}%,${0.3+Math.random()*0.4})`;
+  const angle = Math.random() * Math.PI * 2;
+  const speed = isFirework ? Math.random() * 6 + 2 : Math.random() * 0.4 + 0.1;
+  this.vx = Math.cos(angle) * speed;
+  this.vy = Math.sin(angle) * speed;
+  this.alpha = 1;
+  this.decay = isFirework ? 0.015 + Math.random()*0.015 : 0.003;
+  this.gravity = isFirework ? 0.08 : 0;
+}
+
+// Star particles (always on)
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animParticles() {
+  ctx.clearRect(0, 0, W, H);
+  particles.forEach((p, i) => {
+    p.x += p.vx; p.y += p.vy; p.vy += p.gravity;
+    p.alpha -= p.decay;
+    if (p.alpha <= 0) {
+      // revive ambient particles, remove firework particles
+      if (p.gravity === 0) {
+        particles[i] = new Particle();
+      } else {
+        particles.splice(i, 1);
+      }
+      return;
+    }
+    ctx.save();
+    ctx.globalAlpha = p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+    ctx.restore();
+  });
+  requestAnimationFrame(animParticles);
+}
+animParticles();
+
+/* ══ FIREWORKS on CELEBRATION ══ */
+let fwInterval;
+function launchFirework() {
+  const x = W * (0.2 + Math.random() * 0.6);
+  const y = H * (0.1 + Math.random() * 0.5);
+  for (let i = 0; i < 60; i++) particles.push(new Particle(x, y, true));
+}
+
+// Auto launch fireworks on load
+fwInterval = setInterval(launchFirework, 700);
+launchFirework(); launchFirework();
+
+/* ══ FLOATING ITEMS on CELEBRATION ══ */
+const floatItems = ['🌹','💫','✨','🎉','💖','🌸','🎊','💕','⭐','🌟'];
+const fwLayer = document.getElementById('fw-layer');
+floatItems.forEach((em, i) => {
+  const el = document.createElement('div');
+  el.className = 'float-item';
+  el.textContent = em;
+  el.style.cssText = `
+    left:${5 + Math.random()*90}%;
+    top:${5 + Math.random()*90}%;
+    --s:${24+Math.random()*32}px;
+    --d:${3+Math.random()*4}s;
+    --dl:${Math.random()*3}s;
+  `;
+  fwLayer.appendChild(el);
+});
+
+/* ══ OPEN LETTER ══ */
+function openLetter() {
+  clearInterval(fwInterval);
+  const cel = document.getElementById('celebration');
+  cel.style.transition = 'opacity 0.8s, transform 0.8s';
+  cel.style.opacity = '0';
+  cel.style.transform = 'scale(1.05)';
+  setTimeout(() => {
+    cel.style.display = 'none';
+    const lp = document.getElementById('letter-page');
+    lp.style.display = 'block';
+    buildHearts();
+    initReveal();
+    window.scrollTo(0, 0);
+  }, 800);
+}
+
+/* ══ FLOATING HEARTS BG ══ */
+function buildHearts() {
+  const container = document.getElementById('hearts-bg');
+  const emojis = ['❤️','🌹','💕','💖','✨','💫','🌸'];
+  for (let i = 0; i < 20; i++) {
+    const h = document.createElement('div');
+    h.className = 'bg-heart';
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    h.style.cssText = `
+      --s:${14+Math.random()*22}px;
+      --d:${6+Math.random()*10}s;
+      --dl:${Math.random()*10}s;
+      --l:${Math.random()*100}%;
+    `;
+    container.appendChild(h);
+  }
+}
+
+/* ══ SCROLL REVEAL ══ */
+function initReveal() {
+  const els = document.querySelectorAll('[data-reveal]');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(el => obs.observe(el));
+}
+</script>
+</body>
+</html>
